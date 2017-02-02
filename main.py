@@ -26,6 +26,10 @@ page_header = """
         .error {
             color: red;
         }
+
+        .big{
+            line-height: 1.5
+        }
     </style>
 </head>
 <body>
@@ -38,10 +42,71 @@ page_footer = """
 </html>
 """
 
+def build_page(username,email):
+
+    username_row = '''<td><label for="username">Username</label></td>
+                        <td>
+                            <input name="username" type="text" value="''' + username + '''"required>
+                            <span class="error"></span>
+                        </td>'''
+    password_row = '''<td><label for="password">Password</label></td>
+                        <td>
+                            <input name="password" type="password" required>
+                            <span class="error"></span>
+                        </td>'''
+    verify_row = '''<td><label for="verify">Verify Password</label></td>
+                        <td>
+                            <input name="verify" type="password" required>
+                            <span class="error"></span>
+                        </td>'''
+    email_row = '''<td><label for="email">Email (optional)</label></td>
+                        <td>
+                            <input name="email" type="email" value=''' + email + '''>
+                            <span class="error"></span>
+                        </td>'''
+
+    form_table = '''<form method="post">
+                <table class="big">
+
+                    <tr>
+                        {0}
+                    </tr>
+
+                    <tr>
+                        {1}
+                    </tr>
+
+                    <tr>
+                        {2}
+                    </tr>
+
+                    <tr>
+                        {3}
+                    </tr>
+
+                </table>
+                <br/>
+                <input type="submit">
+            </form>'''.format(username_row, password_row, verify_row, email_row)
+
+
+
+    return page_header + form_table + page_footer
+
+
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        self.response.write('Hello world!')
+
+        content = build_page("","")
+
+        self.response.write(content)
+
+
+# class WelcomeHandler(webapp2.RequestHandler):
+
+
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)
+    # ('/welcome', WelcomeHandler)
 ], debug=True)
